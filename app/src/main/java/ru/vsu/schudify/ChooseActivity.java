@@ -28,42 +28,34 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class ChooseActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.UserService;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+public class ChooseActivity extends AppCompatActivity implements View.OnCreateContextMenuListener  {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    public static final String APPLICATION_ID = "F15C1675-EABE-7BAF-FFBF-2687A86AD400";
+    public static final String API_KEY = "7597C60F-985E-5836-FF1D-645282E5C800";
+    public static final String SERVER_URL = "https://api.backendless.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_choose);
+
+        Backendless.initApp(this, APPLICATION_ID, API_KEY);
 
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button searchScheduleButton = (Button) findViewById(R.id.search_schedule);
+        searchScheduleButton.setOnClickListener(new OnClickListener()  {
             @Override
             public void onClick(View view) {
                 checkData();
@@ -84,14 +76,22 @@ public class ChooseActivity extends AppCompatActivity implements LoaderCallbacks
         EditText groupView = (EditText) findViewById(R.id.group);
         String group = groupView.getText().toString();
 
-        if
+        boolean checkEmptyness=false;
 
+        if (university.isEmpty()) universityView.setError("Заполните поле!");
+        if (faculty.isEmpty()) facultyView.setError("Заполните поле!");
+        if (course.isEmpty()) courseView.setError("Заполните поле!");
+        if (group.isEmpty()) groupView.setError("Заполните поле!");
 
+        if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty()){
 
         }
-    }
 
 
     }
 }
+
+
+
+
 

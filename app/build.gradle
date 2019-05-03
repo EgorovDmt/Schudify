@@ -25,4 +25,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation fileTree( include: ['*.jar'], dir: 'libs' )
+    implementation group: 'com.backendless', name: 'backendless', version: '5.0.2'
+    implementation ( group: 'io.socket', name: 'socket.io-client', version: '1.0.0' ) {
+        //      excluding org.json which is provided by Android
+        exclude group: 'org.json', module: 'json'
+    }
 }
+
