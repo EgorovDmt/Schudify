@@ -42,6 +42,10 @@ public class Card {
     String title;
     String content;
 
+    public String getTitle(){
+        return title;
+    }
+
     Card(String title, String content) {
         this.title = title;
         this.content = content;

@@ -3,6 +3,7 @@ package ru.vsu.schudify;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -58,7 +59,10 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
         searchScheduleButton.setOnClickListener(new OnClickListener()  {
             @Override
             public void onClick(View view) {
-                checkData();
+                if (checkData()) {
+                    Intent intent = new Intent(ChooseActivity.this, ShowScheduleActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -66,7 +70,7 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
     }
 
 
-    private void checkData() {
+    private boolean checkData() {
         EditText universityView = (EditText) findViewById(R.id.university);
         String university = universityView.getText().toString();
         EditText facultyView = (EditText) findViewById(R.id.faculty);
@@ -84,10 +88,10 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
         if (group.isEmpty()) groupView.setError("Заполните поле");
 
         if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty()){
-
+            return true;
         }
 
-
+        return false;
     }
 }
 
