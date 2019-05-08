@@ -42,11 +42,13 @@ import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
+
+
 public class ShowScheduleActivity extends AppCompatActivity implements View.OnCreateContextMenuListener  {
 
-    public static final String APPLICATION_ID = "F15C1675-EABE-7BAF-FFBF-2687A86AD400";
-    public static final String API_KEY = "7597C60F-985E-5836-FF1D-645282E5C800";
-    public static final String SERVER_URL = "https://api.backendless.com";
+    private List cards;
+    private RecyclerView rv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,46 +56,38 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_schedule);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.subject_list);
-        recyclerView.setLayoutManager() = LinearLayoutManager;
+        rv=(RecyclerView)findViewById(R.id.rv);
 
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
 
-        Button searchScheduleButton = (Button) findViewById(R.id.search_schedule);
-        searchScheduleButton.setOnClickListener(new OnClickListener()  {
-            @Override
-            public void onClick(View view) {
-                checkData();
-            }
-        });
+        initializeData();
+        initializeAdapter();
+    }
 
+    private void initializeData(){
+        cards = new ArrayList<>();
+        cards.add(new Card("Card 1", "Content 1"));
+        cards.add(new Card("Card 2", "Content 2"));
+        cards.add(new Card("Card 3", "Content 3"));
+        cards.add(new Card("Card 4", "Content 4"));
+        cards.add(new Card("Card 5", "Content 5"));
+    }
 
+    private void initializeAdapter(){
+        RVAdapter adapter = new RVAdapter(cards);
+        rv.setAdapter(adapter);
+    }
+
+    void showSnackbar(int position) {
+        Snackbar.make(rv, "Карточка с номером "+position, Snackbar.LENGTH_LONG).show();
     }
 
 
-    private void checkData() {
-        EditText universityView = (EditText) findViewById(R.id.university);
-        String university = universityView.getText().toString();
-        EditText facultyView = (EditText) findViewById(R.id.faculty);
-        String faculty = facultyView.getText().toString();
-        EditText courseView = (EditText) findViewById(R.id.course);
-        String course = courseView.getText().toString();
-        EditText groupView = (EditText) findViewById(R.id.group);
-        String group = groupView.getText().toString();
-
-        boolean checkEmptyness=false;
-
-        if (university.isEmpty()) universityView.setError("Заполните поле!");
-        if (faculty.isEmpty()) facultyView.setError("Заполните поле!");
-        if (course.isEmpty()) courseView.setError("Заполните поле!");
-        if (group.isEmpty()) groupView.setError("Заполните поле!");
-
-        if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty()){
-
-        }
 
 
-    }
 }
+
 
 
 

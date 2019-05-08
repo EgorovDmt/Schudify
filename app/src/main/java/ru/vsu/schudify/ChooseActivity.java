@@ -78,10 +78,10 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
 
         boolean checkEmptyness=false;
 
-        if (university.isEmpty()) universityView.setError("Заполните поле!");
-        if (faculty.isEmpty()) facultyView.setError("Заполните поле!");
-        if (course.isEmpty()) courseView.setError("Заполните поле!");
-        if (group.isEmpty()) groupView.setError("Заполните поле!");
+        if (university.isEmpty()) universityView.setError("Заполните поле");
+        if (faculty.isEmpty()) facultyView.setError("Заполните поле");
+        if (course.isEmpty()) courseView.setError("Заполните поле");
+        if (group.isEmpty()) groupView.setError("Заполните поле");
 
         if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty()){
 
