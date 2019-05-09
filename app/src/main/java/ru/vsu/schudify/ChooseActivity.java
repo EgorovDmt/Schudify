@@ -60,7 +60,7 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
             @Override
             public void onClick(View view) {
                 if (checkData()) {
-                    Intent intent = new Intent(ChooseActivity.this, ShowScheduleActivity.class);
+                    Intent intent = new Intent(ChooseActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             }
