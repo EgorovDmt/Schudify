@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,14 +16,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class DBHelper extends SQLiteOpenHelper {
 
+    private static final String url = "jdbc:mysql://localhost:3306/test";
+    private static final String user = "root";
+    private static final String password = "root";
+
+    List cards;
+
     private static final String TAG = "RoadMap4.DBHelper";
 
-    String datascripts = "datascheme";
-    String database = "data";
+    String datascripts = "datascripts";
+    String database = "database";
 
     Context mContext;
     int mVersion;
@@ -42,12 +50,12 @@ public abstract class DBHelper extends SQLiteOpenHelper {
         }
 
         ArrayList<HashMap<String, ContentValues>> dataSQL = getSQLDatas();
-        for (HashMap<String, ContentValues> hm: dataSQL){
+       /* for (HashMap<String, ContentValues> hm: dataSQL){
             for (String table: hm.keySet()){
                 Log.d(TAG, "insert into " + table + " " + hm.get(table));
                 long rowId = db.insert(table, null, hm.get(table));
             }
-        }
+        }*/
 
     }
 
@@ -56,7 +64,7 @@ public abstract class DBHelper extends SQLiteOpenHelper {
         ArrayList<String> files = new ArrayList<>();
 
         AssetManager assetManager = mContext.getAssets();
-        String dir = datascripts + mVersion;
+        String dir = database + mVersion;
 
         try {
             String[] listFiles = assetManager.list(dir);
@@ -64,7 +72,7 @@ public abstract class DBHelper extends SQLiteOpenHelper {
                 files.add(file);
             }
 
-            Collections.sort(files, new QueryFilesComparator());
+            //Collections.sort(files, new QueryFilesComparator());
 
             BufferedReader bufferedReader;
             String query;
@@ -88,7 +96,7 @@ public abstract class DBHelper extends SQLiteOpenHelper {
         return tables;
     }
 
-    private class QueryFilesComparator implements Comparator<String> {
+    /*private class QueryFilesComparator implements Comparator<String> {
 
         @Override
         public int compare(String file1, String file2) {
@@ -96,7 +104,7 @@ public abstract class DBHelper extends SQLiteOpenHelper {
             Integer f1 = Integer.parseInt(file2.substring(0, 2));
             return f2.compareTo(f1);
         }
-    }
+    }*/
 
     private ArrayList<HashMap<String, ContentValues>> getSQLDatas() {
         ArrayList<HashMap<String, ContentValues>> data = new ArrayList<>();
@@ -178,6 +186,8 @@ public abstract class DBHelper extends SQLiteOpenHelper {
 
         return data;
     }
+
+
 
 
 }

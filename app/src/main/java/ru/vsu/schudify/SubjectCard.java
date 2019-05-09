@@ -28,6 +28,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,16 +40,20 @@ import com.backendless.BackendlessUser;
 import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-public class Card {
+public class SubjectCard {
     String title;
-    String content;
+    String type;
+    String timeStart;
+    String timeEnd;
+    String classroom;
+    String teacher;
 
-    public String getTitle(){
-        return title;
-    }
-
-    Card(String title, String content) {
+    SubjectCard(String title, String type, String timeStart, String timeEnd, String classroom, String teacher) {
         this.title = title;
-        this.content = content;
+        this.type = type;
+        this.timeStart=timeStart;
+        this.timeEnd=timeEnd;
+        this.classroom = classroom;
+        this.teacher = teacher;
     }
 }

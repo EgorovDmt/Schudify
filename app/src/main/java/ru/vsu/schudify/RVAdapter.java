@@ -88,16 +88,25 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
     @Override
     public void onBindViewHolder(CardViewHolder cardViewHolder, int position) {
         CardView cardView = cardViewHolder.cardView;
-        TextView title = (TextView)cardView.findViewById(R.id.title);
+
         cardViewHolder.currentCardPosition = position;
-        TextView title1=title;
 
-        Card card = new Card("title", "content");
-        card = (Card) cards.get(position);
+        SubjectCard card = new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А.");
 
+        card = (SubjectCard) cards.get(position);
+
+        TextView title = (TextView)cardView.findViewById(R.id.title);
         title.setText(card.title);
-        TextView content = (TextView)cardView.findViewById(R.id.content);
-        content.setText(card.content);
+        TextView type = (TextView)cardView.findViewById(R.id.type);
+        type.setText(card.type);
+        TextView timeStart = (TextView)cardView.findViewById(R.id.timeStart);
+        timeStart.setText(card.timeStart);
+        TextView timeEnd = (TextView)cardView.findViewById(R.id.timeEnd);
+        timeEnd.setText(card.timeEnd);
+        TextView classroom = (TextView)cardView.findViewById(R.id.classroom);
+        classroom.setText(card.classroom);
+        TextView teacher = (TextView)cardView.findViewById(R.id.teacher);
+        teacher.setText(card.teacher);
 
     }
 
