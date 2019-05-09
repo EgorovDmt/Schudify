@@ -40,20 +40,30 @@ import com.backendless.BackendlessUser;
 import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-public class SubjectCard {
+public class Subject {
     String title;
     String type;
     String timeStart;
     String timeEnd;
     String classroom;
     String teacher;
+    int universityId;
+    int weekDay;
+    int facultyId;
+    int groupId;
 
-    SubjectCard(String title, String type, String timeStart, String timeEnd, String classroom, String teacher) {
+    Subject(String title, String type, String timeStart, String timeEnd, String classroom, String teacher, int universityId, int weekDay, int facultyId, int groupId) {
         this.title = title;
         this.type = type;
         this.timeStart=timeStart;
         this.timeEnd=timeEnd;
         this.classroom = classroom;
         this.teacher = teacher;
+        this.universityId = universityId;
+        this.weekDay = weekDay;
+        this.facultyId = facultyId;
+        this.groupId = groupId;
     }
+
+    Subject(){}
 }

@@ -40,20 +40,12 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
         rv.setAdapter(adapter);
     }
 
-    void showSnackbar(int position) {
-        Snackbar.make(rv, "Карточка с номером "+position, Snackbar.LENGTH_LONG).show();
-    }
 
     public void setDataToCards(){
         subjectCards = new ArrayList<>();
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-        subjectCards.add(new SubjectCard("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А."));
-
+        subjectCards.add(new Subject("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А.", 1, 1, 1, 1));
+        subjectCards.add(new Subject("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А.", 1, 1, 1, 1));
+        subjectCards.add(new Subject("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А.", 1, 1, 1, 1));
     }
 }
 

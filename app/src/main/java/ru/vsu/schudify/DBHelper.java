@@ -23,7 +23,7 @@ import java.util.UUID;
 
 class DBHelper extends SQLiteOpenHelper {
 
-    public DBHelper(MainActivity context) {
+    public DBHelper(DBManager context) {
         super(context, "myDB", null, 1);
     }
 
