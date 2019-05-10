@@ -57,7 +57,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
 
         cardViewHolder.currentCardPosition = position;
 
-        Subject card = new Subject("Программирование", "Лекция", "9:45", "11:30", "404п", "Скоробогатова М.А.", 1, 1, 1, 1);
+        Subject card = new Subject();
 
 
         card = (Subject) cards.get(position);

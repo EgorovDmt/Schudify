@@ -65,5 +65,18 @@ public class Subject {
         this.groupId = groupId;
     }
 
+    Subject(Subject subject) {
+        this.title = subject.title;
+        this.type = subject.type;
+        this.timeStart=subject.timeStart;
+        this.timeEnd=subject.timeEnd;
+        this.classroom = subject.classroom;
+        this.teacher = subject.teacher;
+        this.universityId = subject.universityId;
+        this.weekDay = subject.weekDay;
+        this.facultyId = subject.facultyId;
+        this.groupId = subject.groupId;
+    }
+
     Subject(){}
 }
