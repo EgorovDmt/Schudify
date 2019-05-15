@@ -72,10 +72,28 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/shape_edittext"
+                android:hint="Город"
+                android:textAlignment="center"
+                android:textColorHint="#aaaaaa"
+                android:textColor="@color/colorMainWhite"
+                android:imeActionId="6"
+                android:textSize="24dp"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+            <EditText
                 android:id="@+id/university"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:layout_below="@id/city"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/shape_edittext"
                 android:hint="Университет"
                 android:textAlignment="center"

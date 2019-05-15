@@ -47,12 +47,13 @@ public class Subject {
     String timeEnd;
     String classroom;
     String teacher;
+    String season;
     int universityId;
     int weekDay;
     int facultyId;
     int groupId;
 
-    Subject(String title, String type, String timeStart, String timeEnd, String classroom, String teacher, int universityId, int weekDay, int facultyId, int groupId) {
+    Subject(String title, String type, String timeStart, String timeEnd, String classroom, String teacher, int universityId, int weekDay, int facultyId, int groupId, String season) {
         this.title = title;
         this.type = type;
         this.timeStart=timeStart;
@@ -63,6 +64,7 @@ public class Subject {
         this.weekDay = weekDay;
         this.facultyId = facultyId;
         this.groupId = groupId;
+        this.season=season;
     }
 
     Subject(Subject subject) {
@@ -76,6 +78,7 @@ public class Subject {
         this.weekDay = subject.weekDay;
         this.facultyId = subject.facultyId;
         this.groupId = subject.groupId;
+        this.season = subject.season;
     }
 
     Subject(){}

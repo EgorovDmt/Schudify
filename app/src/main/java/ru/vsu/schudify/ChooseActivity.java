@@ -46,6 +46,13 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
     public static final String API_KEY = "7597C60F-985E-5836-FF1D-645282E5C800";
     public static final String SERVER_URL = "https://api.backendless.com";
 
+    String university;
+    String faculty ;
+    String course;
+    String group;
+    String city ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,43 +62,63 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
         Backendless.initApp(this, APPLICATION_ID, API_KEY);
 
 
+
+
         Button searchScheduleButton = (Button) findViewById(R.id.search_schedule);
         searchScheduleButton.setOnClickListener(new OnClickListener()  {
             @Override
             public void onClick(View view) {
-                if (checkData()) {
+                if (!checkData().isEmpty()) {
                     Intent intent = new Intent(ChooseActivity.this, ShowScheduleActivity.class);
+                    intent.putExtra("university", university);
+                    intent.putExtra("city", city);
+                    intent.putExtra("faculty", faculty);
+                    intent.putExtra("course", course);
+                    intent.putExtra("group", group);
+
                     startActivity(intent);
+
                 }
             }
         });
-
-
     }
 
 
-    private boolean checkData() {
+
+    public List<String> checkData() {
+
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Заполните поля", Snackbar.LENGTH_LONG);
+
         EditText universityView = (EditText) findViewById(R.id.university);
-        String university = universityView.getText().toString();
+        university = universityView.getText().toString();
         EditText facultyView = (EditText) findViewById(R.id.faculty);
-        String faculty = facultyView.getText().toString();
+        faculty = facultyView.getText().toString();
         EditText courseView = (EditText) findViewById(R.id.course);
-        String course = courseView.getText().toString();
+        course = courseView.getText().toString();
         EditText groupView = (EditText) findViewById(R.id.group);
-        String group = groupView.getText().toString();
+        group = groupView.getText().toString();
+        EditText cityView = (EditText) findViewById(R.id.city);
+        city = cityView.getText().toString();
 
-        boolean checkEmptyness=false;
+        if (university.isEmpty()) snackbar.show();
+        if (city.isEmpty()) snackbar.show();
+        if (faculty.isEmpty()) snackbar.show();
+        if (course.isEmpty()) snackbar.show();
+        if (group.isEmpty()) snackbar.show();
 
-        if (university.isEmpty()) universityView.setError("Заполните поле");
-        if (faculty.isEmpty()) facultyView.setError("Заполните поле");
-        if (course.isEmpty()) courseView.setError("Заполните поле");
-        if (group.isEmpty()) groupView.setError("Заполните поле");
+        List<String> information = new ArrayList<>();
 
-        if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty()){
-            return true;
+        if (!university.isEmpty() && !faculty.isEmpty() && !course.isEmpty() && !group.isEmpty() && !city.isEmpty())
+        {
+            information.add(university);
+            information.add(faculty);
+            information.add(course);
+            information.add(group);
+            information.add(city);
+
+            return information;
         }
-
-        return false;
+        return information;
     }
 }
 
