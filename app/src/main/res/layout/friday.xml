@@ -15,13 +15,20 @@
     android:background="@drawable/background"
     tools:context=".ShowScheduleActivity">
 
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="300dp" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/rv"
+        android:layout_marginTop="100dp"
+        android:id="@+id/rv5"
         >
 
     </android.support.v7.widget.RecyclerView>
+
+
 
 
 

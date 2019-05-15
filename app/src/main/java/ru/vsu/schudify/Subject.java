@@ -41,17 +41,17 @@ import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 public class Subject {
-    String title;
-    String type;
-    String timeStart;
-    String timeEnd;
-    String classroom;
-    String teacher;
-    String season;
-    int universityId;
-    int weekDay;
-    int facultyId;
-    int groupId;
+    public String title;
+    public String type;
+    public String timeStart;
+    public String timeEnd;
+    public String classroom;
+    public String teacher;
+    public String season;
+    public int universityId;
+    public int weekDay;
+    public int facultyId;
+    public int groupId;
 
     Subject(String title, String type, String timeStart, String timeEnd, String classroom, String teacher, int universityId, int weekDay, int facultyId, int groupId, String season) {
         this.title = title;
@@ -67,7 +67,7 @@ public class Subject {
         this.season=season;
     }
 
-    Subject(Subject subject) {
+    public Subject(Subject subject) {
         this.title = subject.title;
         this.type = subject.type;
         this.timeStart=subject.timeStart;
@@ -81,5 +81,5 @@ public class Subject {
         this.season = subject.season;
     }
 
-    Subject(){}
+    public Subject(){}
 }

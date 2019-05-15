@@ -1,52 +1,65 @@
 package ru.vsu.schudify;
 
+import android.app.Activity;
+import android.os.Bundle;
+
 import android.content.Context;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ViewFlipper;
 
 import com.backendless.Backendless;
-import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.backendless.persistence.DataQueryBuilder.create;
+public class Main extends Activity implements OnTouchListener
+{
+    private ViewFlipper flipper = null;
+    private float fromPosition;
+
+    private List<Subject> subjectCards;
+    private List<Subject> subjectCardForDay = new ArrayList<Subject>();
+    private RecyclerView rv1;
+    private RecyclerView rv2;
+    private RecyclerView rv3;
+    private RecyclerView rv4;
+    private RecyclerView rv5;
+    private RecyclerView rv6;
+    private RecyclerView rv7;
 
 
-public class ShowScheduleActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
-
-    private List subjectCards;
-    private RecyclerView rv;
-
-    public static final String API_KEY = "7597C60F-985E-5836-FF1D-645282E5C800";
-    public static final String SERVER_URL = "https://api.backendless.com";
-
-    ViewFlipper flipper;
-    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_schedule);
+        setContentView(R.layout.main_layout);
+
+        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
+        mainLayout.setOnTouchListener(this);
+
+        flipper = (ViewFlipper) findViewById(R.id.flipper);
+
+
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        int layouts[] = new int[]{ R.layout.monday, R.layout.tuesday, R.layout.wednesday, R.layout.thursday, R.layout.friday, R.layout.saturday, R.layout.sunday};
+        for (int layout : layouts)
+            flipper.addView(inflater.inflate(layout, null));
+
+        setManager();
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
-        rv=(RecyclerView)findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
 
         String university = getIntent().getStringExtra("university").toLowerCase();
         String city = getIntent().getStringExtra("city").toLowerCase();
@@ -54,19 +67,95 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
         String course = getIntent().getStringExtra("course").toLowerCase();
         String group = getIntent().getStringExtra("group").toLowerCase();
 
-
         setSubjectsToCards(city, university, faculty, course, group);
-        initializeAdapter();
+
+        initializeAdapter(rv1,1 );
+        initializeAdapter(rv2, 2);
+        initializeAdapter(rv3, 3);
+        initializeAdapter(rv4, 4);
+        initializeAdapter(rv5, 5);
+        initializeAdapter(rv6, 6);
+        initializeAdapter(rv7, 7);
     }
 
-    private void initializeAdapter(){
-        RVAdapter adapter = new RVAdapter(subjectCards);
+    public void setSubjectCardForDay(int day){
+
+        if (!(subjectCardForDay==null)){subjectCardForDay.clear();}
+
+        for (Subject subject:subjectCards) {
+            if (subject.weekDay == day){
+                subjectCardForDay.add(new Subject(subject));
+            }
+        }
+
+    }
+
+    public void setManager(){
+        rv1=(RecyclerView)findViewById(R.id.rv1);
+        LinearLayoutManager llm1 = new LinearLayoutManager(this);
+        rv1.setLayoutManager(llm1);
+
+        rv2=(RecyclerView)findViewById(R.id.rv2);
+        LinearLayoutManager llm2 = new LinearLayoutManager(this);
+        rv2.setLayoutManager(llm2);
+
+        rv3=(RecyclerView)findViewById(R.id.rv3);
+        LinearLayoutManager llm3 = new LinearLayoutManager(this);
+        rv3.setLayoutManager(llm3);
+
+        rv4=(RecyclerView)findViewById(R.id.rv4);
+        LinearLayoutManager llm4 = new LinearLayoutManager(this);
+        rv4.setLayoutManager(llm4);
+
+        rv5=(RecyclerView)findViewById(R.id.rv5);
+        LinearLayoutManager llm5 = new LinearLayoutManager(this);
+        rv5.setLayoutManager(llm5);
+
+        rv6=(RecyclerView)findViewById(R.id.rv6);
+        LinearLayoutManager llm6 = new LinearLayoutManager(this);
+        rv6.setLayoutManager(llm6);
+
+        rv7=(RecyclerView)findViewById(R.id.rv7);
+        LinearLayoutManager llm7 = new LinearLayoutManager(this);
+        rv7.setLayoutManager(llm7);
+    }
+
+    public boolean onTouch(View view, MotionEvent event)
+    {
+        switch (event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                fromPosition = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                float toPosition = event.getX();
+                if (fromPosition > toPosition)
+                {
+                    flipper.setInAnimation(AnimationUtils.loadAnimation(this,R.anim.go_next_in));
+                    flipper.setOutAnimation(AnimationUtils.loadAnimation(this,R.anim.go_next_out));
+                    flipper.showNext();
+                }
+                else if (fromPosition < toPosition)
+                {
+                    flipper.setInAnimation(AnimationUtils.loadAnimation(this,R.anim.go_prev_in));
+                    flipper.setOutAnimation(AnimationUtils.loadAnimation(this,R.anim.go_prev_out));
+                    flipper.showPrevious();
+                }
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void initializeAdapter(RecyclerView rv, int i){
+        setSubjectCardForDay(i);
+        RVAdapter adapter = new RVAdapter(subjectCardForDay);
         rv.setAdapter(adapter);
     }
 
     public void swapMaps(Map<String, String> first, Map<String, String> second){
-        for (Map.Entry parameter1 : first.entrySet()) {
-            for (Map.Entry parameter2 : second.entrySet()) {
+        for (Map.Entry<String, String> parameter1 : first.entrySet()) {
+            for (Map.Entry<String, String> parameter2 : second.entrySet()) {
                 if (parameter1.getKey()==parameter2.getKey() && !(parameter1.getKey().toString().equals("__class")) && !(parameter1.getKey().toString().equals("ownerId"))){
                     String tempValue = parameter1.getValue().toString();
                     first.put(parameter1.getKey().toString(), parameter2.getValue().toString());
@@ -106,7 +195,7 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
         return subjects;
     }
 
-    public String getTablesID (String tableName, String whereClause){
+    public String getTableID(String tableName, String whereClause){
 
         DataQueryBuilder DataQuery = DataQueryBuilder.create();
         DataQuery.setWhereClause( whereClause );
@@ -127,19 +216,19 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
     }
 
     public void setSubjectsToCards(String city, String university, String faculty, String course, String group){
-        subjectCards = new ArrayList<>();
+        subjectCards = new ArrayList<Subject>();
 
         String universityWhereClause = "name = '" +university+ "' and city = '"+city+"'";
-        String university_id = getTablesID("university", universityWhereClause);
+        String university_id = getTableID("university", universityWhereClause);
 
         String facultyWhereClause = "name = '" + faculty + "'";
-        String faculty_id = getTablesID("faculty", facultyWhereClause);
+        String faculty_id = getTableID("faculty", facultyWhereClause);
 
         String courseWhereClause = "id = '" + course + "'";
-        String course_id = getTablesID("course", courseWhereClause);
+        String course_id = getTableID("course", courseWhereClause);
 
         String groupWhereClause = "name = '" + group + "'";
-        String group_id = getTablesID("group", groupWhereClause);
+        String group_id = getTableID("group", groupWhereClause);
 
 
         String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
@@ -153,7 +242,7 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
 
             Subject tempSubject = new Subject();
 
-            for (Map.Entry entry : subject.entrySet()) {
+            for (Map.Entry<String, String> entry : subject.entrySet()) {
                 if (entry.getKey().equals("title"))
                     tempSubject.title =  (entry.getValue()).toString();
                 else if (entry.getKey().equals("type"))
@@ -182,10 +271,5 @@ public class ShowScheduleActivity extends AppCompatActivity implements View.OnCr
         }
 
     }
+
 }
-
-
-
-
-
-

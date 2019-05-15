@@ -37,7 +37,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
         }
     }
 
-    RVAdapter(List cards){
+    public RVAdapter(List cards){
         this.cards = cards;
     }
 
@@ -57,13 +57,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
 
         cardViewHolder.currentCardPosition = position;
 
-
         Subject card = new Subject();
 
 
         card = (Subject) cards.get(position);
 
-        TextView title = (TextView)cardView.findViewById(R.id.title);
+        TextView title = (TextView)cardView.findViewById(R.id.title1);
         title.setText(card.title);
         TextView type = (TextView)cardView.findViewById(R.id.type);
         type.setText(card.type);

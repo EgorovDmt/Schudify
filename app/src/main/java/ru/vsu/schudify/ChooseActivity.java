@@ -69,7 +69,7 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
             @Override
             public void onClick(View view) {
                 if (!checkData().isEmpty()) {
-                    Intent intent = new Intent(ChooseActivity.this, ShowScheduleActivity.class);
+                    Intent intent = new Intent(ChooseActivity.this, Main.class);
                     intent.putExtra("university", university);
                     intent.putExtra("city", city);
                     intent.putExtra("faculty", faculty);

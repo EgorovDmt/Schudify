@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/cv"
-    android:layout_margin="5dp"
+    android:layout_margin="15dp"
+
     card_view:cardCornerRadius="6dp"
     card_view:cardBackgroundColor="@android:color/transparent"
     >
@@ -17,7 +18,7 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/title1"
             android:layout_width="270dp"
             android:layout_height="40dp"
             android:layout_marginLeft="58dp"
