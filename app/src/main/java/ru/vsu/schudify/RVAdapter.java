@@ -57,6 +57,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
 
         cardViewHolder.currentCardPosition = position;
 
+
         Subject card = new Subject();
 
 
