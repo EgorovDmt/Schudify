@@ -13,12 +13,59 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@drawable/background"
-    tools:context=".ShowScheduleActivity">
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Среда"
+        android:textSize="30dp"
+        android:textColor="@color/colorMainWhite"
+        android:textAlignment="center"
+        android:id="@+id/sunday_text"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="Числитель"
+        android:textSize="20dp"
+        android:textColor="@color/colorMainWhite"
+        android:textAlignment="center"
+        android:id="@+id/numeral"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270dp"
+        android:text="Знаменатель"
+        android:textSize="20dp"
+        android:textColor="@color/colorMainWhite"
+        android:textAlignment="center"
+        android:id="@+id/denumeral"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="330dp"
         android:id="@+id/rv3"
+        >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="300dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/rv10"
         >
 
     </android.support.v7.widget.RecyclerView>

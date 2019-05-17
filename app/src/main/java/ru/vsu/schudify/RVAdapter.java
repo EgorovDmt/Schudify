@@ -14,6 +14,8 @@ import java.util.List;
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
 
     List cards;
+    List cardsWrong;
+    String season;
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,15 +23,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
         int currentCardPosition;
         Context mContext;
 
-        CardViewHolder(CardView cv, Context context) { //добавили Context context
+        CardViewHolder(CardView cv, Context context) {
             super(cv);
             cardView = cv;
 
-            /* Показываем Snackbar */
             mContext=context;
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    if(mContext instanceof ShowScheduleActivity){
+                    if(mContext instanceof MainActivity){
 
                     }
                 }
@@ -37,15 +38,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
         }
     }
 
-    public RVAdapter(List cards){
+    public RVAdapter(List cards, String season){
         this.cards = cards;
+        this.season = season;
     }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CardView cv = (CardView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cardview, parent, false);
-        return new CardViewHolder(cv, cv.getContext());
+
+        Subject card = new Subject();
+        card = (Subject) cards.get(0);
+
+
+            CardView cv = (CardView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.cardview, parent, false);
+            return new CardViewHolder(cv, cv.getContext());
+
     }
 
     @NonNull
@@ -74,6 +82,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
         classroom.setText(card.classroom);
         TextView teacher = (TextView)cardView.findViewById(R.id.teacher);
         teacher.setText(card.teacher);
+        TextView subgroup = (TextView)cardView.findViewById(R.id.subgroup);
+        if (card.subgroup != "") {
+            subgroup.setText(card.subgroup + " подгр");
+        }
+        else {
+            subgroup.setText(card.subgroup);
+        }
 
     }
 

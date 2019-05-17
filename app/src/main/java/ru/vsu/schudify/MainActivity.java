@@ -1,18 +1,23 @@
 package ru.vsu.schudify;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.support.v7.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import com.backendless.Backendless;
@@ -22,13 +27,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Main extends Activity implements OnTouchListener
+public class MainActivity extends AppCompatActivity implements OnTouchListener
 {
     private ViewFlipper flipper = null;
     private float fromPosition;
 
+    private Toolbar toolbar;
+
     private List<Subject> subjectCards;
     private List<Subject> subjectCardForDay = new ArrayList<Subject>();
+    private List<Subject> subjectCardForWrongSeason = new ArrayList<Subject>();
+    private List<Subject> subjectCardForRightSeason = new ArrayList<Subject>();
     private RecyclerView rv1;
     private RecyclerView rv2;
     private RecyclerView rv3;
@@ -36,6 +45,21 @@ public class Main extends Activity implements OnTouchListener
     private RecyclerView rv5;
     private RecyclerView rv6;
     private RecyclerView rv7;
+    private RecyclerView rv8;
+    private RecyclerView rv9;
+    private RecyclerView rv10;
+    private RecyclerView rv11;
+    private RecyclerView rv12;
+    private RecyclerView rv13;
+    private RecyclerView rv14;
+
+    List<Map> subjects;
+
+    public String season = "";
+
+    public String getSeason(){
+        return season;
+    }
 
 
     @Override
@@ -49,7 +73,8 @@ public class Main extends Activity implements OnTouchListener
 
         flipper = (ViewFlipper) findViewById(R.id.flipper);
 
-
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int layouts[] = new int[]{ R.layout.monday, R.layout.tuesday, R.layout.wednesday, R.layout.thursday, R.layout.friday, R.layout.saturday, R.layout.sunday};
@@ -69,6 +94,8 @@ public class Main extends Activity implements OnTouchListener
 
         setSubjectsToCards(city, university, faculty, course, group);
 
+        setSubjectCardForSeason(season);
+
         initializeAdapter(rv1,1 );
         initializeAdapter(rv2, 2);
         initializeAdapter(rv3, 3);
@@ -76,15 +103,70 @@ public class Main extends Activity implements OnTouchListener
         initializeAdapter(rv5, 5);
         initializeAdapter(rv6, 6);
         initializeAdapter(rv7, 7);
+        initializeAdapter(rv8,8 );
+        initializeAdapter(rv9, 9);
+        initializeAdapter(rv10, 10);
+        initializeAdapter(rv11, 11);
+        initializeAdapter(rv12, 12);
+        initializeAdapter(rv13, 13);
+        initializeAdapter(rv14, 14);
     }
 
-    public void setSubjectCardForDay(int day){
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_layout, menu);
+        return true;
+    }
 
-        if (!(subjectCardForDay==null)){subjectCardForDay.clear();}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.change_schedule:
+                Intent intent = new Intent(MainActivity.this, ChooseActivity.class);
+                intent.putExtra("reIntent", "1");
+                startActivity(intent);
+                break;
+            case R.id.calendar:
+
+                break;
+            case R.id.settings:
+
+                break;
+            case R.id.teacher:
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public List<Subject> setSubjectCardForDay(int day, List<Subject> subjectCardForDays){
+
+        ArrayList<Subject> subjectCards = new ArrayList<Subject>(subjectCardForDays);
+
+        for (Subject subject:subjectCardForDays) {
+            if (subject.weekDay != day){
+                subjectCards.remove(subject);
+            }
+        }
+
+        return subjectCards;
+
+    }
+
+    public void setSubjectCardForSeason(String season){
+
+        subjectCardForWrongSeason = new ArrayList<Subject>(subjectCards);
+        subjectCardForRightSeason = new ArrayList<Subject>(subjectCards);
 
         for (Subject subject:subjectCards) {
-            if (subject.weekDay == day){
-                subjectCardForDay.add(new Subject(subject));
+            String tempSeason = subject.season.toString();
+            if (!(tempSeason.equals(season))){
+                subjectCardForRightSeason.remove(subject);
+            }
+            else {
+                subjectCardForWrongSeason.remove(subject);
             }
         }
 
@@ -118,6 +200,34 @@ public class Main extends Activity implements OnTouchListener
         rv7=(RecyclerView)findViewById(R.id.rv7);
         LinearLayoutManager llm7 = new LinearLayoutManager(this);
         rv7.setLayoutManager(llm7);
+
+        rv8=(RecyclerView)findViewById(R.id.rv8);
+        LinearLayoutManager llm8 = new LinearLayoutManager(this);
+        rv8.setLayoutManager(llm8);
+
+        rv9=(RecyclerView)findViewById(R.id.rv9);
+        LinearLayoutManager llm9 = new LinearLayoutManager(this);
+        rv9.setLayoutManager(llm9);
+
+        rv10=(RecyclerView)findViewById(R.id.rv10);
+        LinearLayoutManager llm10 = new LinearLayoutManager(this);
+        rv10.setLayoutManager(llm10);
+
+        rv11=(RecyclerView)findViewById(R.id.rv11);
+        LinearLayoutManager llm11 = new LinearLayoutManager(this);
+        rv11.setLayoutManager(llm11);
+
+        rv12=(RecyclerView)findViewById(R.id.rv12);
+        LinearLayoutManager llm12 = new LinearLayoutManager(this);
+        rv12.setLayoutManager(llm12);
+
+        rv13=(RecyclerView)findViewById(R.id.rv13);
+        LinearLayoutManager llm13 = new LinearLayoutManager(this);
+        rv13.setLayoutManager(llm13);
+
+        rv14=(RecyclerView)findViewById(R.id.rv14);
+        LinearLayoutManager llm14 = new LinearLayoutManager(this);
+        rv14.setLayoutManager(llm14);
     }
 
     public boolean onTouch(View view, MotionEvent event)
@@ -148,19 +258,48 @@ public class Main extends Activity implements OnTouchListener
     }
 
     private void initializeAdapter(RecyclerView rv, int i){
-        setSubjectCardForDay(i);
-        RVAdapter adapter = new RVAdapter(subjectCardForDay);
+
+        List<Subject> subjectCard=new ArrayList<>();
+
+        if (i>7){
+            i-=7;
+            subjectCard = setSubjectCardForDay(i, subjectCardForWrongSeason);
+        }else {
+            subjectCard = setSubjectCardForDay(i, subjectCardForRightSeason);
+        }
+        RVAdapter adapter = new RVAdapter(subjectCard, season);
         rv.setAdapter(adapter);
     }
 
     public void swapMaps(Map<String, String> first, Map<String, String> second){
         for (Map.Entry<String, String> parameter1 : first.entrySet()) {
-            for (Map.Entry<String, String> parameter2 : second.entrySet()) {
-                if (parameter1.getKey()==parameter2.getKey() && !(parameter1.getKey().toString().equals("__class")) && !(parameter1.getKey().toString().equals("ownerId"))){
-                    String tempValue = parameter1.getValue().toString();
-                    first.put(parameter1.getKey().toString(), parameter2.getValue().toString());
-                    second.put(parameter1.getKey().toString(), tempValue);
-                }
+
+            if (!(parameter1.getKey().toString().equals("___class")) && !(parameter1.getKey().toString().equals("ownerId")) &&
+                    !(parameter1.getKey().toString().equals("created")) && !(parameter1.getKey().toString().equals("updated")) ){
+
+                        for (Map.Entry<String, String> parameter2 : second.entrySet()) {
+
+                            if (parameter1.getKey()==parameter2.getKey() && !(parameter2.getKey().toString().equals("___class")) &&
+                                    !(parameter2.getKey().toString().equals("ownerId")) && !(parameter2.getKey().toString().equals("created")) &&
+                                    !(parameter2.getKey().toString().equals("updated")) ){
+
+                                if ((parameter1.getValue()==parameter2.getValue())){ break;}
+
+                                String tempFirstValue;
+                                String tempSecondValue;
+
+                                if (parameter1.getValue()==null) { tempFirstValue = ""; }
+                                else tempFirstValue = parameter1.getValue().toString();
+
+                                if (parameter2.getValue()==null) { tempSecondValue = ""; }
+                                else tempSecondValue = parameter2.getValue().toString();
+
+                                String tempValue = tempFirstValue;
+                                first.put(parameter1.getKey().toString(), tempSecondValue);
+                                second.put(parameter2.getKey().toString(), tempValue);
+                                break;
+                            }
+                        }
             }
         }
 
@@ -195,7 +334,36 @@ public class Main extends Activity implements OnTouchListener
         return subjects;
     }
 
-    public String getTableID(String tableName, String whereClause){
+    public List<Map> splitSubjectBySeason(List<Map> subjects){
+        for (int i=0; i<subjects.size()-1; i++) {
+            Map firstSubject = subjects.get(i);
+
+            for (int j=i+1; j<subjects.size(); j++){
+
+                Map secondSubject = subjects.get(j);
+                String firstValue = (String) firstSubject.get("timeStart");
+                String secondValue = (String) secondSubject.get("timeStart");
+                char firstSignOfFirst = firstValue.charAt(0);
+                char secondSignOfFirst = firstValue.charAt(1);
+                char firstSignOfSecond = secondValue.charAt(0);
+                char secondSignOfSecond = secondValue.charAt(1);
+
+                if (firstSignOfFirst<firstSignOfSecond){
+
+                    swapMaps(firstSubject, secondSubject);
+                }
+                else if (firstSignOfFirst==firstSignOfSecond){
+                    if (secondSignOfFirst>secondSignOfSecond){
+                        swapMaps(firstSubject, secondSubject);
+                    }
+                }
+            }
+
+        }
+        return subjects;
+    }
+
+    public String getTableParameter(String tableName, String whereClause, boolean trueSeason){
 
         DataQueryBuilder DataQuery = DataQueryBuilder.create();
         DataQuery.setWhereClause( whereClause );
@@ -210,6 +378,9 @@ public class Main extends Activity implements OnTouchListener
         else{
             tempTable = table.get(0);
             id = tempTable.get("id").toString();
+            if (trueSeason){
+                season = tempTable.get("season").toString();
+            }
             return id;
         }
         return id;
@@ -219,17 +390,16 @@ public class Main extends Activity implements OnTouchListener
         subjectCards = new ArrayList<Subject>();
 
         String universityWhereClause = "name = '" +university+ "' and city = '"+city+"'";
-        String university_id = getTableID("university", universityWhereClause);
+        String university_id = getTableParameter("university", universityWhereClause, false);
 
         String facultyWhereClause = "name = '" + faculty + "'";
-        String faculty_id = getTableID("faculty", facultyWhereClause);
+        String faculty_id = getTableParameter("faculty", facultyWhereClause, true);
 
         String courseWhereClause = "id = '" + course + "'";
-        String course_id = getTableID("course", courseWhereClause);
+        String course_id = getTableParameter("course", courseWhereClause, false);
 
         String groupWhereClause = "name = '" + group + "'";
-        String group_id = getTableID("group", groupWhereClause);
-
+        String group_id = getTableParameter("group", groupWhereClause, false);
 
         String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
         DataQueryBuilder subjectDataQuery = DataQueryBuilder.create();
@@ -237,6 +407,9 @@ public class Main extends Activity implements OnTouchListener
 
         List<Map> subjects = Backendless.Persistence.of( "subject" ).find( subjectDataQuery );
         subjects=sortSubjectByTime(subjects);
+        subjects = splitSubjectBySeason(subjects);
+        
+        
 
         for (Map<String, String> subject : subjects) {
 
@@ -265,6 +438,13 @@ public class Main extends Activity implements OnTouchListener
                     tempSubject.weekDay =  Integer.parseInt(entry.getValue().toString());
                 else if (entry.getKey().equals("season"))
                     tempSubject.season =  (entry.getValue().toString());
+                else if (entry.getKey().equals("subgroup")){
+                    if (entry.getValue()==null){
+                        tempSubject.subgroup =  "";
+                    }else{
+                        tempSubject.subgroup =  (entry.getValue().toString());
+                    }
+                }
 
             }
             subjectCards.add(new Subject(tempSubject));
