@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -29,6 +31,8 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
     String course;
     String group;
     String city ;
+
+    String[] languages = { "C","C++","Java","C#","PHP","JavaScript","jQuery","AJAX","JSON" };
 
     private Toolbar toolbar;
 
@@ -51,12 +55,20 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
         String reIntent = getIntent().getStringExtra("reIntent");
         String checker = userDetails.getString("university", "");
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, languages);
+        //Find TextView control
+        AutoCompleteTextView acTextView = (AutoCompleteTextView) findViewById(R.id.city);
+        //Set the number of characters the user must type before the drop down list is shown
+        acTextView.setThreshold(1);
+        //Set the adapter
+        acTextView.setAdapter(adapter);
+
         if (reIntent!=null) {
             checker = "";
             TextView welcome = (TextView) findViewById(R.id.introduce);
             welcome.setText("");
             TextView instruction = (TextView) findViewById(R.id.instruction1);
-            instruction.setText("Введите информацию,\nчтобы мы смогли найти\nдругое расписание");
+            instruction.setText("Введите информацию,\nчтобы мы смогли найти\nрасписание");
             instruction.setTextSize(26);
             instruction.setTop(30);
 
@@ -68,6 +80,8 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
             instruction.setLayoutParams(params);
 
         }
+
+        checker="";
 
 
         if (!checker.equals("")){
@@ -110,10 +124,6 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
             }
         });
     }
-
-
-
-
 
     public List<String> checkData() {
 

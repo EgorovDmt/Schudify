@@ -60,7 +60,7 @@
             android:layout_marginRight="35dp"
             android:layout_height="match_parent">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,8 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                />
 
             <EditText
                 android:id="@+id/university"

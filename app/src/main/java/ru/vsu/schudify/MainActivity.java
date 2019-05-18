@@ -334,35 +334,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         return subjects;
     }
 
-    public List<Map> splitSubjectBySeason(List<Map> subjects){
-        for (int i=0; i<subjects.size()-1; i++) {
-            Map firstSubject = subjects.get(i);
-
-            for (int j=i+1; j<subjects.size(); j++){
-
-                Map secondSubject = subjects.get(j);
-                String firstValue = (String) firstSubject.get("timeStart");
-                String secondValue = (String) secondSubject.get("timeStart");
-                char firstSignOfFirst = firstValue.charAt(0);
-                char secondSignOfFirst = firstValue.charAt(1);
-                char firstSignOfSecond = secondValue.charAt(0);
-                char secondSignOfSecond = secondValue.charAt(1);
-
-                if (firstSignOfFirst<firstSignOfSecond){
-
-                    swapMaps(firstSubject, secondSubject);
-                }
-                else if (firstSignOfFirst==firstSignOfSecond){
-                    if (secondSignOfFirst>secondSignOfSecond){
-                        swapMaps(firstSubject, secondSubject);
-                    }
-                }
-            }
-
-        }
-        return subjects;
-    }
-
     public String getTableParameter(String tableName, String whereClause, boolean trueSeason){
 
         DataQueryBuilder DataQuery = DataQueryBuilder.create();
@@ -391,25 +362,27 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         String universityWhereClause = "name = '" +university+ "' and city = '"+city+"'";
         String university_id = getTableParameter("university", universityWhereClause, false);
+        checkEmptyness(university_id);
 
         String facultyWhereClause = "name = '" + faculty + "'";
         String faculty_id = getTableParameter("faculty", facultyWhereClause, true);
+        checkEmptyness(faculty_id);
 
         String courseWhereClause = "id = '" + course + "'";
         String course_id = getTableParameter("course", courseWhereClause, false);
+        checkEmptyness(course_id);
 
         String groupWhereClause = "name = '" + group + "'";
         String group_id = getTableParameter("group", groupWhereClause, false);
+        checkEmptyness(group_id);
 
         String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
         DataQueryBuilder subjectDataQuery = DataQueryBuilder.create();
         subjectDataQuery.setWhereClause( subjectWhereClause );
 
         List<Map> subjects = Backendless.Persistence.of( "subject" ).find( subjectDataQuery );
+        checkEmptyness(subjects);
         subjects=sortSubjectByTime(subjects);
-        subjects = splitSubjectBySeason(subjects);
-        
-        
 
         for (Map<String, String> subject : subjects) {
 
@@ -452,4 +425,20 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
     }
 
+    public void checkEmptyness(String parameter){
+        if (parameter=="0"){
+            Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
+            intent.putExtra("reIntent", "1");
+            startActivity(intent);
+        }
+    }
+
+    public void checkEmptyness(List<Map> parameter){
+        if (parameter.size()==0){
+            Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
+            intent.putExtra("reIntent", "1");
+            startActivity(intent);
+        }
+    }
 }
+
