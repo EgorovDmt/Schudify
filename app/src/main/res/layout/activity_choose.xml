@@ -76,7 +76,10 @@
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
                 android:singleLine="true"
+                android:windowSoftInputMode="adjustResize"
                 />
+
+
 
             <EditText
                 android:id="@+id/university"

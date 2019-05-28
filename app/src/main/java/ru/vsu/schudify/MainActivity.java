@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
     private List<Subject> subjectCardForDay = new ArrayList<Subject>();
     private List<Subject> subjectCardForWrongSeason = new ArrayList<Subject>();
     private List<Subject> subjectCardForRightSeason = new ArrayList<Subject>();
-    private RecyclerView rv1;
-    private RecyclerView rv2;
-    private RecyclerView rv3;
-    private RecyclerView rv4;
-    private RecyclerView rv5;
-    private RecyclerView rv6;
-    private RecyclerView rv7;
-    private RecyclerView rv8;
+    private RecyclerView mondayNumerical;//numeral week
+    private RecyclerView tuesdayNumerical;
+    private RecyclerView wednesdayNumerical;
+    private RecyclerView thursdayNumerical;
+    private RecyclerView fridayNumerical;
+    private RecyclerView saturdayNumerical;
+    private RecyclerView sundayNumerical;
+    private RecyclerView rv8;//denumeral week
     private RecyclerView rv9;
     private RecyclerView rv10;
     private RecyclerView rv11;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.main_activity);
 
         LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
         mainLayout.setOnTouchListener(this);
@@ -92,17 +92,19 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         String course = getIntent().getStringExtra("course").toLowerCase();
         String group = getIntent().getStringExtra("group").toLowerCase();
 
-        setSubjectsToCards(city, university, faculty, course, group);
+        if (!setSubjectsToCards(city, university, faculty, course, group)){
+            return;
+        }
 
         setSubjectCardForSeason(season);
 
-        initializeAdapter(rv1,1 );
-        initializeAdapter(rv2, 2);
-        initializeAdapter(rv3, 3);
-        initializeAdapter(rv4, 4);
-        initializeAdapter(rv5, 5);
-        initializeAdapter(rv6, 6);
-        initializeAdapter(rv7, 7);
+        initializeAdapter(mondayNumerical,1 );
+        initializeAdapter(tuesdayNumerical, 2);
+        initializeAdapter(wednesdayNumerical, 3);
+        initializeAdapter(thursdayNumerical, 4);
+        initializeAdapter(fridayNumerical, 5);
+        initializeAdapter(saturdayNumerical, 6);
+        initializeAdapter(sundayNumerical, 7);
         initializeAdapter(rv8,8 );
         initializeAdapter(rv9, 9);
         initializeAdapter(rv10, 10);
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }//menu tap describer
 
     public List<Subject> setSubjectCardForDay(int day, List<Subject> subjectCardForDays){
 
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         return subjectCards;
 
-    }
+    }//removes wrong subjects from list by day
 
     public void setSubjectCardForSeason(String season){
 
@@ -170,36 +172,36 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
             }
         }
 
-    }
+    }//removes wrong subjects from list by season
 
     public void setManager(){
-        rv1=(RecyclerView)findViewById(R.id.rv1);
+        mondayNumerical =(RecyclerView)findViewById(R.id.rv1);
         LinearLayoutManager llm1 = new LinearLayoutManager(this);
-        rv1.setLayoutManager(llm1);
+        mondayNumerical.setLayoutManager(llm1);
 
-        rv2=(RecyclerView)findViewById(R.id.rv2);
+        tuesdayNumerical =(RecyclerView)findViewById(R.id.rv2);
         LinearLayoutManager llm2 = new LinearLayoutManager(this);
-        rv2.setLayoutManager(llm2);
+        tuesdayNumerical.setLayoutManager(llm2);
 
-        rv3=(RecyclerView)findViewById(R.id.rv3);
+        wednesdayNumerical =(RecyclerView)findViewById(R.id.rv3);
         LinearLayoutManager llm3 = new LinearLayoutManager(this);
-        rv3.setLayoutManager(llm3);
+        wednesdayNumerical.setLayoutManager(llm3);
 
-        rv4=(RecyclerView)findViewById(R.id.rv4);
+        thursdayNumerical =(RecyclerView)findViewById(R.id.rv4);
         LinearLayoutManager llm4 = new LinearLayoutManager(this);
-        rv4.setLayoutManager(llm4);
+        thursdayNumerical.setLayoutManager(llm4);
 
-        rv5=(RecyclerView)findViewById(R.id.rv5);
+        fridayNumerical =(RecyclerView)findViewById(R.id.rv5);
         LinearLayoutManager llm5 = new LinearLayoutManager(this);
-        rv5.setLayoutManager(llm5);
+        fridayNumerical.setLayoutManager(llm5);
 
-        rv6=(RecyclerView)findViewById(R.id.rv6);
+        saturdayNumerical =(RecyclerView)findViewById(R.id.rv6);
         LinearLayoutManager llm6 = new LinearLayoutManager(this);
-        rv6.setLayoutManager(llm6);
+        saturdayNumerical.setLayoutManager(llm6);
 
-        rv7=(RecyclerView)findViewById(R.id.rv7);
+        sundayNumerical =(RecyclerView)findViewById(R.id.rv7);
         LinearLayoutManager llm7 = new LinearLayoutManager(this);
-        rv7.setLayoutManager(llm7);
+        sundayNumerical.setLayoutManager(llm7);
 
         rv8=(RecyclerView)findViewById(R.id.rv8);
         LinearLayoutManager llm8 = new LinearLayoutManager(this);
@@ -228,9 +230,9 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         rv14=(RecyclerView)findViewById(R.id.rv14);
         LinearLayoutManager llm14 = new LinearLayoutManager(this);
         rv14.setLayoutManager(llm14);
-    }
+    }//setting layout manager to all 14 cardviews
 
-    public boolean onTouch(View view, MotionEvent event)
+    public boolean onTouch(View view, MotionEvent event)//describes actions of swipes
     {
         switch (event.getAction())
         {
@@ -269,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         }
         RVAdapter adapter = new RVAdapter(subjectCard, season);
         rv.setAdapter(adapter);
-    }
+    }//gives information of cards to card adapter
 
     public void swapMaps(Map<String, String> first, Map<String, String> second){
         for (Map.Entry<String, String> parameter1 : first.entrySet()) {
@@ -303,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
             }
         }
 
-    }
+    }//swap maps. usually while sorting
 
     public List<Map> sortSubjectByTime(List<Map> subjects){
         for (int i=0; i<subjects.size()-1; i++) {
@@ -332,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         }
         return subjects;
-    }
+    }//sorts list of subject maps by time
 
     public String getTableParameter(String tableName, String whereClause, boolean trueSeason){
 
@@ -355,33 +357,45 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
             return id;
         }
         return id;
-    }
+    }//returns id of table if it's not empty
 
-    public void setSubjectsToCards(String city, String university, String faculty, String course, String group){
+    public boolean setSubjectsToCards(String city, String university, String faculty, String course, String group){
         subjectCards = new ArrayList<Subject>();
+
+        boolean checker = true;
 
         String universityWhereClause = "name = '" +university+ "' and city = '"+city+"'";
         String university_id = getTableParameter("university", universityWhereClause, false);
-        checkEmptyness(university_id);
+        checker = checkEmptyness(university_id);
+
+        if (!checker) {return false;}
 
         String facultyWhereClause = "name = '" + faculty + "'";
         String faculty_id = getTableParameter("faculty", facultyWhereClause, true);
-        checkEmptyness(faculty_id);
+        checker = checkEmptyness(faculty_id);
+
+        if (!checker) {return false;}
 
         String courseWhereClause = "id = '" + course + "'";
         String course_id = getTableParameter("course", courseWhereClause, false);
-        checkEmptyness(course_id);
+        checker = checkEmptyness(course_id);
+
+        if (!checker) {return false;}
 
         String groupWhereClause = "name = '" + group + "'";
         String group_id = getTableParameter("group", groupWhereClause, false);
-        checkEmptyness(group_id);
+        checker = checkEmptyness(group_id);
+
+        if (!checker) {return false;}
 
         String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
         DataQueryBuilder subjectDataQuery = DataQueryBuilder.create();
         subjectDataQuery.setWhereClause( subjectWhereClause );
-
         List<Map> subjects = Backendless.Persistence.of( "subject" ).find( subjectDataQuery );
-        checkEmptyness(subjects);
+        checker = checkEmptyness(subjects);
+
+        if (!checker) {return false;}
+
         subjects=sortSubjectByTime(subjects);
 
         for (Map<String, String> subject : subjects) {
@@ -422,23 +436,29 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
             }
             subjectCards.add(new Subject(tempSubject));
         }
+        return true;
 
     }
 
-    public void checkEmptyness(String parameter){
+    public void goToErrorActivity(){
+        Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
+        intent.putExtra("reIntent", "1");
+        startActivity(intent);
+    }
+
+    public boolean checkEmptyness(String parameter){
         if (parameter=="0"){
-            Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
-            intent.putExtra("reIntent", "1");
-            startActivity(intent);
+            goToErrorActivity();
         }
+        return true;
     }
 
-    public void checkEmptyness(List<Map> parameter){
+    public boolean checkEmptyness(List<Map> parameter){
         if (parameter.size()==0){
-            Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
-            intent.putExtra("reIntent", "1");
-            startActivity(intent);
+            goToErrorActivity();
+            return false;
         }
+        return true;
     }
 }
 

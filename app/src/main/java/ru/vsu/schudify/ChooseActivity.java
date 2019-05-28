@@ -2,6 +2,7 @@ package ru.vsu.schudify;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
@@ -36,6 +37,15 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
 
     private Toolbar toolbar;
 
+    private void saveParameters(Intent intent){
+
+    }
+
+    private void loadParameters(){
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +60,19 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
 
         Button searchScheduleButton = (Button) findViewById(R.id.search_schedule);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         SharedPreferences userDetails = getApplicationContext().getSharedPreferences("data", MODE_PRIVATE);
         final SharedPreferences.Editor data = userDetails.edit();
         String reIntent = getIntent().getStringExtra("reIntent");
         String checker = userDetails.getString("university", "");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, languages);
-        //Find TextView control
-        AutoCompleteTextView acTextView = (AutoCompleteTextView) findViewById(R.id.city);
-        //Set the number of characters the user must type before the drop down list is shown
-        acTextView.setThreshold(1);
-        //Set the adapter
-        acTextView.setAdapter(adapter);
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, languages);
+        AutoCompleteTextView cityTextView = (AutoCompleteTextView) findViewById(R.id.city);
+        cityTextView.setThreshold(1);
+        cityTextView.setAdapter(cityAdapter);
+
 
         if (reIntent!=null) {
             checker = "";
@@ -80,8 +91,6 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
             instruction.setLayoutParams(params);
 
         }
-
-        checker="";
 
 
         if (!checker.equals("")){
@@ -161,8 +170,3 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
         return information;
     }
 }
-
-
-
-
-
