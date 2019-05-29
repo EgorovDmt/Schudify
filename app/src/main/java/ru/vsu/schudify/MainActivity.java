@@ -1,10 +1,12 @@
 package ru.vsu.schudify;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +23,15 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ViewFlipper;
 
 import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnTouchListener
@@ -35,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
     private Toolbar toolbar;
 
     private List<Subject> subjectCards;
-    private List<Subject> subjectCardForDay = new ArrayList<Subject>();
     private List<Subject> subjectCardForWrongSeason = new ArrayList<Subject>();
     private List<Subject> subjectCardForRightSeason = new ArrayList<Subject>();
     private RecyclerView mondayNumerical;//numeral week
@@ -53,14 +59,13 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
     private RecyclerView rv13;
     private RecyclerView rv14;
 
-    List<Map> subjects;
+    List<Map> subject = new ArrayList<>();
 
-    public String season = "";
-
-    public String getSeason(){
-        return season;
+    public void setDataToSubjectsFromServer(List<Map> subjects){
+        this.subject=subjects;
     }
 
+    public String season = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -75,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int layouts[] = new int[]{ R.layout.monday, R.layout.tuesday, R.layout.wednesday, R.layout.thursday, R.layout.friday, R.layout.saturday, R.layout.sunday};
@@ -98,20 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         setSubjectCardForSeason(season);
 
-        initializeAdapter(mondayNumerical,1 );
-        initializeAdapter(tuesdayNumerical, 2);
-        initializeAdapter(wednesdayNumerical, 3);
-        initializeAdapter(thursdayNumerical, 4);
-        initializeAdapter(fridayNumerical, 5);
-        initializeAdapter(saturdayNumerical, 6);
-        initializeAdapter(sundayNumerical, 7);
-        initializeAdapter(rv8,8 );
-        initializeAdapter(rv9, 9);
-        initializeAdapter(rv10, 10);
-        initializeAdapter(rv11, 11);
-        initializeAdapter(rv12, 12);
-        initializeAdapter(rv13, 13);
-        initializeAdapter(rv14, 14);
+        initializeManager();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -231,6 +225,24 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         LinearLayoutManager llm14 = new LinearLayoutManager(this);
         rv14.setLayoutManager(llm14);
     }//setting layout manager to all 14 cardviews
+
+    public void initializeManager(){//calls initialize adapter for every card view field
+        initializeAdapter(mondayNumerical,1 );
+        initializeAdapter(tuesdayNumerical, 2);
+        initializeAdapter(wednesdayNumerical, 3);
+        initializeAdapter(thursdayNumerical, 4);
+        initializeAdapter(fridayNumerical, 5);
+        initializeAdapter(saturdayNumerical, 6);
+        initializeAdapter(sundayNumerical, 7);
+        initializeAdapter(rv8,8 );
+        initializeAdapter(rv9, 9);
+        initializeAdapter(rv10, 10);
+        initializeAdapter(rv11, 11);
+        initializeAdapter(rv12, 12);
+        initializeAdapter(rv13, 13);
+        initializeAdapter(rv14, 14);
+
+    }
 
     public boolean onTouch(View view, MotionEvent event)//describes actions of swipes
     {
@@ -391,18 +403,21 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
         DataQueryBuilder subjectDataQuery = DataQueryBuilder.create();
         subjectDataQuery.setWhereClause( subjectWhereClause );
-        List<Map> subjects = Backendless.Persistence.of( "subject" ).find( subjectDataQuery );
-        checker = checkEmptyness(subjects);
+
+        List<Map> subject = Backendless.Data.of( "subject" ).find( subjectDataQuery );
+
+
+        checker = checkEmptyness(subject);
 
         if (!checker) {return false;}
 
-        subjects=sortSubjectByTime(subjects);
+        subject=sortSubjectByTime(subject);
 
-        for (Map<String, String> subject : subjects) {
+        for (Map<String, String> currentSubject : subject) {
 
             Subject tempSubject = new Subject();
 
-            for (Map.Entry<String, String> entry : subject.entrySet()) {
+            for (Map.Entry<String, String> entry : currentSubject.entrySet()) {
                 if (entry.getKey().equals("title"))
                     tempSubject.title =  (entry.getValue()).toString();
                 else if (entry.getKey().equals("type"))

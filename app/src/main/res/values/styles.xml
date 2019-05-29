@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -11,7 +11,6 @@
     <style name="Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <!-- <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> -->
         <item name="android:background">@color/colorMainLightBlue</item>
     </style>
 
@@ -21,15 +20,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="MyCardViewStyle" parent="Theme.AppCompat.Light">
-        <item name="cardCornerRadius">2dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="contentPaddingBottom">24dp</item>
-        <item name="contentPaddingTop">24dp</item>
-        <item name="contentPaddingLeft">16dp</item>
-        <item name="contentPaddingRight">16dp</item>
-        <item name="cardBackgroundColor">@color/colorMainWhite</item>
-    </style>
+
 
 
 </resources>
