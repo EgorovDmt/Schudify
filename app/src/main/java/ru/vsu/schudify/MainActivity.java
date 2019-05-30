@@ -20,12 +20,15 @@ import android.view.View.OnTouchListener;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,15 +126,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
                 Intent intent = new Intent(MainActivity.this, ChooseActivity.class);
                 intent.putExtra("reIntent", "1");
                 startActivity(intent);
-                break;
-            case R.id.calendar:
-
-                break;
-            case R.id.settings:
-
-                break;
-            case R.id.teacher:
-
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -276,14 +270,93 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         List<Subject> subjectCard=new ArrayList<>();
 
         if (i>7){
-            i-=7;
-            subjectCard = setSubjectCardForDay(i, subjectCardForWrongSeason);
+            subjectCard = setSubjectCardForDay(i-7, subjectCardForWrongSeason);
         }else {
             subjectCard = setSubjectCardForDay(i, subjectCardForRightSeason);
         }
+
         RVAdapter adapter = new RVAdapter(subjectCard, season);
+        if (subjectCard.isEmpty()){
+            setNoLessonByRVNumber(i);
+
+        }
         rv.setAdapter(adapter);
     }//gives information of cards to card adapter
+
+    public void setNoLessonByRVNumber(int i){
+
+        if (i==1){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_1);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==2){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_2);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==3){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_3);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==4){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_4);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==5){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_5);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==6){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_6);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==7){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_7);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==8){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_8);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==9){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_9);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==10){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_10);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==11){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_11);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==12){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_12);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==13){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_13);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        else if (i==14){
+            TextView noLessons = (TextView) findViewById(R.id.no_lessons_14);
+            noLessons.setText("Занятий нет");
+            return;
+        }
+        return;
+    }
 
     public void swapMaps(Map<String, String> first, Map<String, String> second){
         for (Map.Entry<String, String> parameter1 : first.entrySet()) {
@@ -333,18 +406,19 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
                 char firstSignOfSecond = secondValue.charAt(0);
                 char secondSignOfSecond = secondValue.charAt(1);
 
-                if (firstSignOfFirst<firstSignOfSecond){
+                if (firstSignOfFirst>firstSignOfSecond && secondValue.length()<5){
 
                     swapMaps(firstSubject, secondSubject);
                 }
+
                 else if (firstSignOfFirst==firstSignOfSecond){
                     if (secondSignOfFirst>secondSignOfSecond){
                         swapMaps(firstSubject, secondSubject);
-                    }
+                    }}
                 }
             }
 
-        }
+
         return subjects;
     }//sorts list of subject maps by time
 

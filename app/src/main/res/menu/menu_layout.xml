@@ -8,19 +8,5 @@
         android:orderInCategory="100"
         android:title="Другое расписание"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/settings"
-        android:orderInCategory="100"
-        android:title="Настройки"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/calendar"
-        android:orderInCategory="100"
-        android:title="Календарь"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/teacher"
-        android:orderInCategory="100"
-        android:title="Расписание преподавателя"
-        app:showAsAction="never" />
+
 </menu>

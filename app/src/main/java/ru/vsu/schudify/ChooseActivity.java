@@ -2,6 +2,7 @@ package ru.vsu.schudify;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +58,7 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
 
         Button searchScheduleButton = (Button) findViewById(R.id.search_schedule);
 

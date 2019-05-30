@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="35dp"
+        android:layout_below="@+id/sunday_text"
         android:text="Числитель"
         android:textSize="20dp"
         android:textColor="@color/colorMainWhite"
@@ -50,25 +50,63 @@
         android:id="@+id/denumeral"
         />
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="330dp"
-        android:id="@+id/rv5"
-        >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numeral"
+        android:layout_marginBottom="257dp">
 
-    </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textSize="20dp"
+            android:textColor="@color/colorMainWhite"
+            android:textAlignment="center"
+            android:id="@+id/no_lessons_5"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_marginTop="300dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/rv12"
-        >
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:id="@+id/rv5">
+        </android.support.v7.widget.RecyclerView>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/denumeral">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textSize="20dp"
+            android:textColor="@color/colorMainWhite"
+            android:textAlignment="center"
+            android:id="@+id/no_lessons_12"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/rv12"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+
+    </RelativeLayout>
+
+
 
 
 
