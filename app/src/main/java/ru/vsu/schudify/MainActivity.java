@@ -37,6 +37,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import javax.security.auth.Subject;
+
+
 public class MainActivity extends AppCompatActivity implements OnTouchListener
 {
     private ViewFlipper flipper = null;
@@ -44,23 +47,26 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
     private Toolbar toolbar;
 
+    private MainPresenter presenter;
+    private MainModel model;
+
     private List<Subject> subjectCards;
     private List<Subject> subjectCardForWrongSeason = new ArrayList<Subject>();
     private List<Subject> subjectCardForRightSeason = new ArrayList<Subject>();
-    private RecyclerView mondayNumerical;//numeral week
-    private RecyclerView tuesdayNumerical;
-    private RecyclerView wednesdayNumerical;
-    private RecyclerView thursdayNumerical;
-    private RecyclerView fridayNumerical;
-    private RecyclerView saturdayNumerical;
-    private RecyclerView sundayNumerical;
-    private RecyclerView rv8;//denumeral week
-    private RecyclerView rv9;
-    private RecyclerView rv10;
-    private RecyclerView rv11;
-    private RecyclerView rv12;
-    private RecyclerView rv13;
-    private RecyclerView rv14;
+    public static RecyclerView mondayNumerical;//numeral week
+    public static RecyclerView tuesdayNumerical;
+    public static RecyclerView wednesdayNumerical;
+    public static RecyclerView thursdayNumerical;
+    public static RecyclerView fridayNumerical;
+    public static RecyclerView saturdayNumerical;
+    public static RecyclerView sundayNumerical;
+    public static RecyclerView rv8;//denumeral week
+    public static RecyclerView rv9;
+    public static RecyclerView rv10;
+    public static RecyclerView rv11;
+    public static RecyclerView rv12;
+    public static RecyclerView rv13;
+    public static RecyclerView rv14;
 
     List<Map> subject = new ArrayList<>();
 
@@ -79,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
         mainLayout.setOnTouchListener(this);
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        presenter = new MainPresenter(this);
+
+        presenter.attachView(MainActivity.this);
+
         flipper = (ViewFlipper) findViewById(R.id.flipper);
 
         toolbar = findViewById(R.id.toolbar);
@@ -93,22 +106,13 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
 
         setManager();
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
         String university = getIntent().getStringExtra("university").toLowerCase();
         String city = getIntent().getStringExtra("city").toLowerCase();
         String faculty = getIntent().getStringExtra("faculty").toLowerCase();
         String course = getIntent().getStringExtra("course").toLowerCase();
         String group = getIntent().getStringExtra("group").toLowerCase();
 
-        if (!setSubjectsToCards(city, university, faculty, course, group)){
-            return;
-        }
-
-        setSubjectCardForSeason(season);
-
-        initializeManager();
+        presenter.setSubjectsToCards(city, university, faculty, course, group);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,37 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         }
         return super.onOptionsItemSelected(item);
     }//menu tap describer
-
-    public List<Subject> setSubjectCardForDay(int day, List<Subject> subjectCardForDays){
-
-        ArrayList<Subject> subjectCards = new ArrayList<Subject>(subjectCardForDays);
-
-        for (Subject subject:subjectCardForDays) {
-            if (subject.weekDay != day){
-                subjectCards.remove(subject);
-            }
-        }
-
-        return subjectCards;
-
-    }//removes wrong subjects from list by day
-
-    public void setSubjectCardForSeason(String season){
-
-        subjectCardForWrongSeason = new ArrayList<Subject>(subjectCards);
-        subjectCardForRightSeason = new ArrayList<Subject>(subjectCards);
-
-        for (Subject subject:subjectCards) {
-            String tempSeason = subject.season.toString();
-            if (!(tempSeason.equals(season))){
-                subjectCardForRightSeason.remove(subject);
-            }
-            else {
-                subjectCardForWrongSeason.remove(subject);
-            }
-        }
-
-    }//removes wrong subjects from list by season
 
     public void setManager(){
         mondayNumerical =(RecyclerView)findViewById(R.id.rv1);
@@ -220,24 +193,6 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         rv14.setLayoutManager(llm14);
     }//setting layout manager to all 14 cardviews
 
-    public void initializeManager(){//calls initialize adapter for every card view field
-        initializeAdapter(mondayNumerical,1 );
-        initializeAdapter(tuesdayNumerical, 2);
-        initializeAdapter(wednesdayNumerical, 3);
-        initializeAdapter(thursdayNumerical, 4);
-        initializeAdapter(fridayNumerical, 5);
-        initializeAdapter(saturdayNumerical, 6);
-        initializeAdapter(sundayNumerical, 7);
-        initializeAdapter(rv8,8 );
-        initializeAdapter(rv9, 9);
-        initializeAdapter(rv10, 10);
-        initializeAdapter(rv11, 11);
-        initializeAdapter(rv12, 12);
-        initializeAdapter(rv13, 13);
-        initializeAdapter(rv14, 14);
-
-    }
-
     public boolean onTouch(View view, MotionEvent event)//describes actions of swipes
     {
         switch (event.getAction())
@@ -265,24 +220,9 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         return true;
     }
 
-    private void initializeAdapter(RecyclerView rv, int i){
-
-        List<Subject> subjectCard=new ArrayList<>();
-
-        if (i>7){
-            subjectCard = setSubjectCardForDay(i-7, subjectCardForWrongSeason);
-        }else {
-            subjectCard = setSubjectCardForDay(i, subjectCardForRightSeason);
-        }
-
-        RVAdapter adapter = new RVAdapter(subjectCard, season);
-        if (subjectCard.isEmpty()){
-            setNoLessonByRVNumber(i);
-
-        }
-        rv.setAdapter(adapter);
-    }//gives information of cards to card adapter
-
+    public MainPresenter getPresenter(){
+        return presenter;
+    }
     public void setNoLessonByRVNumber(int i){
 
         if (i==1){
@@ -358,196 +298,10 @@ public class MainActivity extends AppCompatActivity implements OnTouchListener
         return;
     }
 
-    public void swapMaps(Map<String, String> first, Map<String, String> second){
-        for (Map.Entry<String, String> parameter1 : first.entrySet()) {
-
-            if (!(parameter1.getKey().toString().equals("___class")) && !(parameter1.getKey().toString().equals("ownerId")) &&
-                    !(parameter1.getKey().toString().equals("created")) && !(parameter1.getKey().toString().equals("updated")) ){
-
-                        for (Map.Entry<String, String> parameter2 : second.entrySet()) {
-
-                            if (parameter1.getKey()==parameter2.getKey() && !(parameter2.getKey().toString().equals("___class")) &&
-                                    !(parameter2.getKey().toString().equals("ownerId")) && !(parameter2.getKey().toString().equals("created")) &&
-                                    !(parameter2.getKey().toString().equals("updated")) ){
-
-                                if ((parameter1.getValue()==parameter2.getValue())){ break;}
-
-                                String tempFirstValue;
-                                String tempSecondValue;
-
-                                if (parameter1.getValue()==null) { tempFirstValue = ""; }
-                                else tempFirstValue = parameter1.getValue().toString();
-
-                                if (parameter2.getValue()==null) { tempSecondValue = ""; }
-                                else tempSecondValue = parameter2.getValue().toString();
-
-                                String tempValue = tempFirstValue;
-                                first.put(parameter1.getKey().toString(), tempSecondValue);
-                                second.put(parameter2.getKey().toString(), tempValue);
-                                break;
-                            }
-                        }
-            }
-        }
-
-    }//swap maps. usually while sorting
-
-    public List<Map> sortSubjectByTime(List<Map> subjects){
-        for (int i=0; i<subjects.size()-1; i++) {
-            Map firstSubject = subjects.get(i);
-
-            for (int j=i+1; j<subjects.size(); j++){
-
-                Map secondSubject = subjects.get(j);
-                String firstValue = (String) firstSubject.get("timeStart");
-                String secondValue = (String) secondSubject.get("timeStart");
-                char firstSignOfFirst = firstValue.charAt(0);
-                char secondSignOfFirst = firstValue.charAt(1);
-                char firstSignOfSecond = secondValue.charAt(0);
-                char secondSignOfSecond = secondValue.charAt(1);
-
-                if (firstSignOfFirst>firstSignOfSecond && secondValue.length()<5){
-
-                    swapMaps(firstSubject, secondSubject);
-                }
-
-                else if (firstSignOfFirst==firstSignOfSecond){
-                    if (secondSignOfFirst>secondSignOfSecond){
-                        swapMaps(firstSubject, secondSubject);
-                    }}
-                }
-            }
-
-
-        return subjects;
-    }//sorts list of subject maps by time
-
-    public String getTableParameter(String tableName, String whereClause, boolean trueSeason){
-
-        DataQueryBuilder DataQuery = DataQueryBuilder.create();
-        DataQuery.setWhereClause( whereClause );
-
-        List<Map> table = Backendless.Persistence.of( tableName ).find( DataQuery );
-        Map tempTable;
-        String id = "0";
-
-        if (table.isEmpty()){
-
-        }
-        else{
-            tempTable = table.get(0);
-            id = tempTable.get("id").toString();
-            if (trueSeason){
-                season = tempTable.get("season").toString();
-            }
-            return id;
-        }
-        return id;
-    }//returns id of table if it's not empty
-
-    public boolean setSubjectsToCards(String city, String university, String faculty, String course, String group){
-        subjectCards = new ArrayList<Subject>();
-
-        boolean checker = true;
-
-        String universityWhereClause = "name = '" +university+ "' and city = '"+city+"'";
-        String university_id = getTableParameter("university", universityWhereClause, false);
-        checker = checkEmptyness(university_id);
-
-        if (!checker) {return false;}
-
-        String facultyWhereClause = "name = '" + faculty + "'";
-        String faculty_id = getTableParameter("faculty", facultyWhereClause, true);
-        checker = checkEmptyness(faculty_id);
-
-        if (!checker) {return false;}
-
-        String courseWhereClause = "id = '" + course + "'";
-        String course_id = getTableParameter("course", courseWhereClause, false);
-        checker = checkEmptyness(course_id);
-
-        if (!checker) {return false;}
-
-        String groupWhereClause = "name = '" + group + "'";
-        String group_id = getTableParameter("group", groupWhereClause, false);
-        checker = checkEmptyness(group_id);
-
-        if (!checker) {return false;}
-
-        String subjectWhereClause = "university_id = '" +university_id+"' and faculty_id = '"+ faculty_id+"' and group_id = '"+group_id+"' and course_id = '"+course_id+"'";
-        DataQueryBuilder subjectDataQuery = DataQueryBuilder.create();
-        subjectDataQuery.setWhereClause( subjectWhereClause );
-
-        List<Map> subject = Backendless.Data.of( "subject" ).find( subjectDataQuery );
-
-
-        checker = checkEmptyness(subject);
-
-        if (!checker) {return false;}
-
-        subject=sortSubjectByTime(subject);
-
-        for (Map<String, String> currentSubject : subject) {
-
-            Subject tempSubject = new Subject();
-
-            for (Map.Entry<String, String> entry : currentSubject.entrySet()) {
-                if (entry.getKey().equals("title"))
-                    tempSubject.title =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("type"))
-                    tempSubject.type =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("timeStart"))
-                    tempSubject.timeStart =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("timeEnd"))
-                    tempSubject.timeEnd =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("classroom"))
-                    tempSubject.classroom =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("teacher"))
-                    tempSubject.teacher =  (entry.getValue()).toString();
-                else if (entry.getKey().equals("university_id"))
-                    tempSubject.universityId =  Integer.parseInt(entry.getValue().toString());
-                else if (entry.getKey().equals("faculty_id"))
-                    tempSubject.facultyId =  Integer.parseInt(entry.getValue().toString());
-                else if (entry.getKey().equals("group_id"))
-                    tempSubject.groupId =  Integer.parseInt(entry.getValue().toString());
-                else if (entry.getKey().equals("week_day"))
-                    tempSubject.weekDay =  Integer.parseInt(entry.getValue().toString());
-                else if (entry.getKey().equals("season"))
-                    tempSubject.season =  (entry.getValue().toString());
-                else if (entry.getKey().equals("subgroup")){
-                    if (entry.getValue()==null){
-                        tempSubject.subgroup =  "";
-                    }else{
-                        tempSubject.subgroup =  (entry.getValue().toString());
-                    }
-                }
-
-            }
-            subjectCards.add(new Subject(tempSubject));
-        }
-        return true;
-
-    }
-
     public void goToErrorActivity(){
         Intent intent = new Intent(MainActivity.this, ErrorActivity.class);
         intent.putExtra("reIntent", "1");
         startActivity(intent);
-    }
-
-    public boolean checkEmptyness(String parameter){
-        if (parameter=="0"){
-            goToErrorActivity();
-        }
-        return true;
-    }
-
-    public boolean checkEmptyness(List<Map> parameter){
-        if (parameter.size()==0){
-            goToErrorActivity();
-            return false;
-        }
-        return true;
     }
 }
 

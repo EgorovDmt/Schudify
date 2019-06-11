@@ -38,16 +38,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
         }
     }
 
-    public RVAdapter(List cards, String season){
+    public RVAdapter(List cards, Reference<String> season){
         this.cards = cards;
-        this.season = season;
+        this.season = season.get();
     }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Subject card = new Subject();
-        card = (Subject) cards.get(0);
+        subject card = new subject();
+        card = (subject) cards.get(0);
 
 
             CardView cv = (CardView) LayoutInflater.from(parent.getContext())
@@ -58,36 +58,35 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewHolder>{
 
     @NonNull
 
-
     @Override
     public void onBindViewHolder(CardViewHolder cardViewHolder, int position) {
         CardView cardView = cardViewHolder.cardView;
 
         cardViewHolder.currentCardPosition = position;
 
-        Subject card = new Subject();
+        subject card = new subject();
 
 
-        card = (Subject) cards.get(position);
+        card = (subject) cards.get(position);
 
         TextView title = (TextView)cardView.findViewById(R.id.title1);
-        title.setText(card.title);
+        title.setText(card.getTitle());
         TextView type = (TextView)cardView.findViewById(R.id.type);
-        type.setText(card.type);
+        type.setText(card.getType());
         TextView timeStart = (TextView)cardView.findViewById(R.id.timeStart);
-        timeStart.setText(card.timeStart);
+        timeStart.setText(card.getTimeStart());
         TextView timeEnd = (TextView)cardView.findViewById(R.id.timeEnd);
-        timeEnd.setText(card.timeEnd);
+        timeEnd.setText(card.getTimeEnd());
         TextView classroom = (TextView)cardView.findViewById(R.id.classroom);
-        classroom.setText(card.classroom);
+        classroom.setText(card.getClassroom());
         TextView teacher = (TextView)cardView.findViewById(R.id.teacher);
-        teacher.setText(card.teacher);
+        teacher.setText(card.getTeacher());
         TextView subgroup = (TextView)cardView.findViewById(R.id.subgroup);
-        if (card.subgroup != "") {
-            subgroup.setText(card.subgroup + " подгр");
+        if (card.getSubgroup() != "") {
+            subgroup.setText(card.getSubgroup() + " подгр");
         }
         else {
-            subgroup.setText(card.subgroup);
+            subgroup.setText(card.getSubgroup());
         }
 
     }

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.backendless.Backendless;
@@ -34,19 +35,9 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
     String group;
     String city ;
 
-    String[] languages = { "C","C++","Java","C#","PHP","JavaScript","jQuery","AJAX","JSON" };
+    List languages = Arrays.asList(new String[]{"r", "r"});
 
     private Toolbar toolbar;
-
-    private void saveParameters(Intent intent){
-
-    }
-
-    private void loadParameters(){
-
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +119,7 @@ public class ChooseActivity extends AppCompatActivity implements View.OnCreateCo
                     data.putString("faculty", faculty);
                     data.putString("course", course);
                     data.putString("group", group);
-                    data.commit();
+                    data.apply();
 
                     startActivity(intent);
                 }
